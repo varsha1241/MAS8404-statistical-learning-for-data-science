@@ -1,6 +1,8 @@
 ---
 title: "Practical1"
-output: html_notebook
+output:
+  pdf_document: default
+  html_notebook: default
 ---
 
 # Make your own data frame
@@ -124,14 +126,20 @@ head(heptathlon)
 library(dplyr)
 mean_values <- heptathlon %>%
   summarise(across(where(is.numeric), mean, na.rm = TRUE))
-heptathlon <- rbind(heptathlon, mean_values)
-print(heptathlon)
+heptathlon_mean_sd <- rbind(heptathlon, mean_values)
+rownames(heptathlon_mean_sd)[nrow(heptathlon_mean_sd)] <- "Mean"
+print(heptathlon_mean_sd)
 ```
 
 ### Task 5.3: find the standard deviation for each sporting category and add a row with these values to the bottom of your new data frame
 
 ```{r}
-
+library(dplyr)
+sd_values <- heptathlon %>%
+  summarise(across(where(is.numeric), sd , na.rm = TRUE))
+heptathlon_mean_sd <- rbind(heptathlon, sd_values)
+rownames(heptathlon_mean_sd)[nrow(heptathlon_mean_sd)] <- "SD"
+print(heptathlon_mean_sd)
 ```
 
 ### Task 5.4: create a covariance matrix for your original data frame
@@ -191,7 +199,7 @@ print(cor_matrix)
 
 ```{r}
 ## you can use, colMeans(), var() and cor()
-cov_matrix <- cov(heptathlon[, c("hurdles", "highjump", "shot", "run200m","longjump","run800m","score")])
+cov_matrix <- cov(heptathlon[, colnames(heptathlon)])
 cov_matrix
 ```
 
@@ -199,14 +207,14 @@ cov_matrix
 
 ```{r}
 ## Compare cor() for the original data frame with cor() for the scaled data frame. You can use scale() make a scaled data frame. 
-correlation_matrix <- cor(heptathlon[, c("hurdles", "highjump", "shot", "run200m","longjump","run800m","score")])
+correlation_matrix <- cor(heptathlon[, colnames(heptathlon)])
 correlation_matrix
 ```
 
 ### Task 5.8 make a scatter plot of the data frame (you can use `pairs(dataframe_name)` )
 
 ```{r}
-
+pairs(heptathlon, colnames(heptathlon))
 ```
 
 ### Task 6: Another Loop exercise
@@ -238,6 +246,7 @@ z = 1
 z = 2
 }
 ##what is z?
+#z IS 2
 ```
 
 ```{r}
@@ -247,7 +256,9 @@ w = FALSE
 } else {
 w = TRUE 
 }
-##what is w?
+##what is w? 
+
+#Its is TRUE
 ```
 
 ## Finding values that fit a condition
