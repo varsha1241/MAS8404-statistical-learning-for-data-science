@@ -1,0 +1,241 @@
+---
+title: "Practical1"
+output: html_notebook
+---
+
+# Make your own data frame
+
+A data frame is a special kind of object for storing and managing data sets of rectangular structure.\
+As we saw in the videos, in the context of multivariate data analysis, the rows typically correspond to\
+the samples and the columns typically correspond to variables. Each column is a vector so\
+must contain data which are all of the same type. However, different columns can contain different\
+types of data.
+
+## Useful data frame functions
+
+1.  dim(): shows the dimensions of the data frame by row and column
+
+2.  str(): shows the structure of the data frame
+
+3.  summary(): provides summary statistics on the columns of the data frame
+
+4.  colnames(): shows the name of each column in the data frame
+
+5.  rownames(): shows the name of each row in the data frame
+
+6.  ncol(): Number of columns
+
+7.  nrow(): Number of rows
+
+8.  head(): shows the first 6 rows of the data frame
+
+9.  tail(): shows the last 6 rows of the data frame
+
+10. View(): shows a spreadsheet-like display of the entire data frame
+
+11. cbind(): Column bind - combine multiple data frames side-by-side
+
+12. rbind(): Row bind - stack multiple data frames on top of each other
+
+### Lets create a data frame
+
+One way to create a data frame is to use the data.frame function. For example,
+
+```{r}
+age = c(24, 26, 25, 21)
+gender = c("Male", "Female", "Male", "Female")
+respond = c(TRUE, FALSE, FALSE, FALSE)
+df = data.frame(age=age, gender=gender, respond=respond)
+```
+
+### Task 1: Before checking your answers in R, try to work out the result of each of the extraction operations below
+
+```{r}
+df[4, 1]
+df[,3]
+df[2,]
+df$age
+df[1:2, 2]
+df[1:3, c(1,3)]
+```
+
+### Task 2: make another data frame and combine it with the one above to make a wider data frame
+
+```{r}
+
+```
+
+### Task 3: make another data frame and combine it with the one above to make a taller data frame
+
+```{r}
+
+```
+
+### Task 4: view your new data frame using the useful commands above
+
+```{r}
+
+```
+
+# A bit of basic coding for warm up
+
+You've been working with R for a few weeks now. Using R we want to code up some of the functions that were mentioned in the week 1.1 videos. R already includes functions to calculate mean, variance and covariance. But here the aim is to get back to the basics and also understand how these functions work. These are the rule for the following tasks:
+
+**You can only use these commands:**
+
+-   **for loops, e.g.**
+
+    `for(i in vec) {`
+
+    `# R code we wish to repeat # ...`
+
+    `}`
+
+    or
+
+    `for(i in 1:10) {`
+
+    `# R code we wish to repeat # ...`
+
+    `}`
+
+-   **the basic data frame commands (i.e. loading the data frame, calling a particular column/row/element, etc)**
+
+### Task 5.1: upload the heptathlon data from the nclSLR package
+
+```{r}
+
+```
+
+### Task 5.2: find the mean of each sporting category, make a copy of your heptathlon data frame and add a row to the bottom of it with the mean values
+
+```{r}
+
+```
+
+### Task 5.3: find the standard deviation for each sporting category and add a row with these values to the bottom of your new data frame
+
+```{r}
+
+```
+
+### Task 5.4: create a covariance matrix for your original data frame
+
+```{r}
+
+```
+
+### Task 5.5: create a correlation matrix for your original data frame
+
+```{r}
+
+```
+
+## From here on you can use any R command
+
+### Task 5.6 compare your results with the pre-made functions in R (you should get the same result)
+
+```{r}
+## you can use, colMeans(), var() and cor()
+
+```
+
+### Task 5.7 plot the correlation matrix
+
+```{r}
+## Compare cor() for the original data frame with cor() for the scaled data frame. You can use scale() make a scaled data frame. 
+```
+
+### Task 5.8 make a scatter plot of the data frame (you can use `pairs(dataframe_name)` )
+
+```{r}
+
+```
+
+### Task 6: Another Loop exercise
+
+1.  Simulate 100 random variables drawn from a normal distribution with mean 5 and standard deviation 2
+2.  Find the mean and standard deviation of your sample (which is going to be close to your inputs but not exactly equal)
+3.  Make a new vector that is the normalised version of part 1
+    1.  Do this once using a for loop
+    2.  Do this using the R vectorised language (without a for loop)
+
+```{r}
+### use rnorm 
+
+
+```
+
+## Conditional statements
+
+### Task 7: Before checking your answers in R, try to work out the values assigned to z and w in the following blocks of code.
+
+```{r}
+x = 5
+y = "Male"
+if((x > 0) & (y == "male")){
+z = 0
+} else if((x > 0) & (y == "female")) {
+z = 1
+} else {
+z = 2
+}
+##what is z?
+```
+
+```{r}
+v = TRUE 
+if(!v) {
+w = FALSE
+} else {
+w = TRUE 
+}
+##what is w?
+```
+
+## Finding values that fit a condition
+
+You can use logical values to choose certain elements of a vector. Run the next chunk to see how vec1 looks like.
+
+```{r}
+vec1 = seq(0, 10, 2)
+vec1 
+```
+
+Before running the next line try to predict what it does
+
+```{r}
+vec1[c(FALSE, FALSE, TRUE, TRUE, FALSE)]
+```
+
+What do you think the following line will produce?
+
+```{r}
+vec1>3
+```
+
+And what about this?
+
+```{r}
+vec1[vec1>3]
+```
+
+You can use \> and \< to produce the same result as `vec1[c(FALSE, FALSE, TRUE, TRUE, FALSE)]`. Write it down in the next chunk
+
+```{r}
+
+```
+
+### Task 8.1: going back to the heptathlon data find all athletes that performed better than average in each category.
+
+(reminder: each column of a data frame is a vector)
+
+```{r}
+
+```
+
+### Task 8.2: Find all athletes that performed better than average in 2,3,... categories
+
+```{r}
+
+```
