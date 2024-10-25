@@ -46,6 +46,7 @@ age = c(24, 26, 25, 21)
 gender = c("Male", "Female", "Male", "Female")
 respond = c(TRUE, FALSE, FALSE, FALSE)
 df = data.frame(age=age, gender=gender, respond=respond)
+df
 ```
 
 ### Task 1: Before checking your answers in R, try to work out the result of each of the extraction operations below
@@ -62,19 +63,27 @@ df[1:3, c(1,3)]
 ### Task 2: make another data frame and combine it with the one above to make a wider data frame
 
 ```{r}
-
+age = c(27, 28, 29, 30)
+gender = c("Male", "Female", "Male", "Female")
+respond = c(TRUE, FALSE, FALSE, FALSE)
+df2 = data.frame(age=age, gender=gender, respond=respond)
+df = rbind(df, df2)
 ```
 
 ### Task 3: make another data frame and combine it with the one above to make a taller data frame
 
 ```{r}
-
+age = c(31, 32, 33, 34)
+gender = c("Male", "Female", "Male", "Female")
+respond = c(TRUE, FALSE, FALSE, FALSE)
+df3 = data.frame(age=age, gender=gender, respond=respond)
+df = rbind(df, df3)
 ```
 
 ### Task 4: view your new data frame using the useful commands above
 
 ```{r}
-
+df
 ```
 
 # A bit of basic coding for warm up
@@ -104,13 +113,19 @@ You've been working with R for a few weeks now. Using R we want to code up some 
 ### Task 5.1: upload the heptathlon data from the nclSLR package
 
 ```{r}
-
+library(nclSLR)
+data("heptathlon")
+head(heptathlon)
 ```
 
 ### Task 5.2: find the mean of each sporting category, make a copy of your heptathlon data frame and add a row to the bottom of it with the mean values
 
 ```{r}
-
+library(dplyr)
+mean_values <- heptathlon %>%
+  summarise(across(where(is.numeric), mean, na.rm = TRUE))
+heptathlon <- rbind(heptathlon, mean_values)
+print(heptathlon)
 ```
 
 ### Task 5.3: find the standard deviation for each sporting category and add a row with these values to the bottom of your new data frame
@@ -122,12 +137,51 @@ You've been working with R for a few weeks now. Using R we want to code up some 
 ### Task 5.4: create a covariance matrix for your original data frame
 
 ```{r}
-
+heptathlon_numeric <- heptathlon[, sapply(heptathlon, is.numeric)]
+manual_cov <- function(x, y,z) {
+  mean_x <- mean(x)
+  mean_y <- mean(y)
+  sum((x - mean_x) * (y - mean_y)) / (z- 1)
+}
+n <- ncol(heptathlon_numeric)
+cov_matrix <- matrix(NA, n, n)
+colnames(cov_matrix) <- colnames(heptathlon_numeric)
+rownames(cov_matrix) <- colnames(heptathlon_numeric)
+for (i in 1:n) {
+  for (j in i:n) {
+    cov_value <- manual_cov(heptathlon_numeric[, i], heptathlon_numeric[, j], length(heptathlon_numeric[, i]))
+    cov_matrix[i, j] <- cov_value
+    cov_matrix[j, i] <- cov_value
+  }
+}
+print(cov_matrix)
 ```
 
 ### Task 5.5: create a correlation matrix for your original data frame
 
 ```{r}
+manual_cor <- function(x, y) {
+  x <- as.numeric(x)
+  y <- as.numeric(y)
+  n <- length(x)
+  mean_x <- mean(x)
+  mean_y <- mean(y)
+  numerator <- sum((x - mean_x) * (y - mean_y))
+  denominator <- sqrt(sum((x - mean_x)^2) * sum((y - mean_y)^2))
+  numerator / denominator
+}
+n <- ncol(heptathlon_numeric)
+cor_matrix <- matrix(NA, n, n)
+colnames(cor_matrix) <- colnames(heptathlon_numeric)
+rownames(cor_matrix) <- colnames(heptathlon_numeric)
+for (i in 1:n) {
+  for (j in i:n) {
+    cor_value <- manual_cor(heptathlon_numeric[, i], heptathlon_numeric[, j])
+    cor_matrix[i, j] <- cor_value
+    cor_matrix[j, i] <- cor_value
+  }
+}
+print(cor_matrix)
 
 ```
 
@@ -137,13 +191,16 @@ You've been working with R for a few weeks now. Using R we want to code up some 
 
 ```{r}
 ## you can use, colMeans(), var() and cor()
-
+cov_matrix <- cov(heptathlon[, c("hurdles", "highjump", "shot", "run200m","longjump","run800m","score")])
+cov_matrix
 ```
 
 ### Task 5.7 plot the correlation matrix
 
 ```{r}
 ## Compare cor() for the original data frame with cor() for the scaled data frame. You can use scale() make a scaled data frame. 
+correlation_matrix <- cor(heptathlon[, c("hurdles", "highjump", "shot", "run200m","longjump","run800m","score")])
+correlation_matrix
 ```
 
 ### Task 5.8 make a scatter plot of the data frame (you can use `pairs(dataframe_name)` )
